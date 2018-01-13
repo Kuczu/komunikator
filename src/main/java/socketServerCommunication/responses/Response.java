@@ -3,9 +3,6 @@ package socketServerCommunication.responses;
 import communicatorServer.models.User.User;
 
 public class Response { // TODO add jsonobject inside instead of strings jsonbody, jwt etc
-	public static final String MAGIC_START = "MAGIC_START";
-	public static final String MAGIC_STOP = "MAGIC_START";
-	
 	private String jsonBody;
 	private String encodedData;
 	private String JWT;
@@ -52,6 +49,6 @@ public class Response { // TODO add jsonobject inside instead of strings jsonbod
 	}
 	
 	public String getResponseToSend() {
-		return Response.MAGIC_START + " " + encodedData + " " + Response.MAGIC_STOP + "\n";
+		return encodedData;
 	}
 }
