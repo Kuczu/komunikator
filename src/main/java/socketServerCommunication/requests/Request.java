@@ -4,6 +4,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
 import communicatorServer.models.User.User;
+import org.glassfish.grizzly.websockets.WebSocket;
 import socketServerCommunication.ClientSocketHandler;
 
 import java.util.logging.Level;
@@ -13,7 +14,7 @@ public class Request {
 	private static final Logger LOGGER = Logger.getLogger(Request.class.getName());
 	private static final JsonParser JSON_PARSER = new JsonParser();
 	
-	private final ClientSocketHandler userSocketHandler;
+	private final WebSocket clientWebSocket;
 	
 	private String rawRequest;
 	
@@ -23,13 +24,13 @@ public class Request {
 	
 	private User user;
 	
-	public Request(String rawRequest, ClientSocketHandler clientSocketHandler) {
+	public Request(String rawRequest, WebSocket clientWebSocket) {
 		this.rawRequest = rawRequest;
-		this.userSocketHandler = clientSocketHandler;
+		this.clientWebSocket = clientWebSocket;
 	}
 	
-	public ClientSocketHandler getUserSocketHandler() {
-		return userSocketHandler;
+	public WebSocket getClientWebSocket() {
+		return clientWebSocket;
 	}
 	
 	public String getRawRequest() {

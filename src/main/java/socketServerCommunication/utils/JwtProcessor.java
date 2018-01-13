@@ -8,6 +8,7 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import communicatorServer.config.AppMainConfig;
+import communicatorServer.contexts.UserConnectionContext;
 import communicatorServer.models.User.User;
 import communicatorServer.models.User.UserService;
 import org.bson.types.ObjectId;
@@ -71,11 +72,9 @@ public class JwtProcessor implements RequestProcessorStep, ResponseProcessorStep
 						.getAsString()
 		);
 		
-		User socketUser = request
-				.getUserSocketHandler()
-				.getUser();
+		ObjectId userSocketId = UserConnectionContext.getUserId(request.getClientWebSocket());
 		
-		if (socketUser != null && userId != socketUser.getId()) {
+		if (userSocketId != null && userId != userSocketId) {
 			throw new JWTVerificationException("CRITICAL!"); // TODO
 		}
 		
@@ -87,8 +86,8 @@ public class JwtProcessor implements RequestProcessorStep, ResponseProcessorStep
 		
 		request.setUser(user);
 		
-		if (socketUser == null) {
-			request.getUserSocketHandler().setUserAndSubscribe(user);
+		if (userSocketId == null) {
+			UserConnectionContext.addLoggedUser(userId, request.getClientWebSocket());
 		}
 	}
 	
