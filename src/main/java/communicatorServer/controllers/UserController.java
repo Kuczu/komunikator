@@ -19,15 +19,21 @@ public class UserController {
 				jsonRequest.get("password").getAsString()
 		);
 
-		Response response = new Response();
-		response.setUser(user);
-
-		return response;
+		return new Response(user);
 	}
 	
 	@ApiPath(path = "/login", needAuthenticate = false)
 	public Response loginUser(Request request) {
-		System.out.println("Dupa debag " + request);
-		return new Response();
+		JsonObject jsonRequest = request.getBodyAsJsonObj();
+		
+		User user = UserService.login( // TODO wrap exception and handle it after controller invocation
+				jsonRequest.get("nick").getAsString(),
+				jsonRequest.get("password").getAsString()
+		);
+		
+		Response response = new Response(user);
+		response.setJsonBody("'status':'git'");
+		
+		return response;
 	}
 }

@@ -16,6 +16,10 @@ public class Response { // TODO add jsonobject inside instead of strings jsonbod
 		this.jsonBody = jsonBody;
 	}
 	
+	public Response(User user) {
+		this.user = user;
+	}
+	
 	public String getJsonBody() {
 		return jsonBody;
 	}

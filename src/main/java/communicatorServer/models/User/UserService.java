@@ -18,6 +18,20 @@ public class UserService {
 		return UserDAO.getByNick(nick);
 	}
 	
+	public static User login(String nick, String password) {
+		if (Strings.isNullOrEmpty(nick) || Strings.isNullOrEmpty(password)) {
+			throw new IllegalArgumentException("Nick and password cannot be empty.");
+		}
+		
+		User user = getUserBy(nick);
+		
+		if (user != null && passwordEncoder.matches(password, user.getPassword())) {
+			return user;
+		}
+		
+		return null;
+	}
+	
 	public static User addNewUser(String nick, String password) {
 		if (getUserBy(nick) != null) {
 			throw new IllegalArgumentException("User with given nick already exists.");
