@@ -15,6 +15,7 @@ public class User {
 	
 	@Id
 	private ObjectId id;
+	
 	private String nick;
 	private String password;
 	private Date joinDate;
@@ -30,7 +31,7 @@ public class User {
 	public String getNick() {
 		return nick;
 	}
-	
+
 	public void setNick(String nick) {
 		this.nick = nick;
 	}

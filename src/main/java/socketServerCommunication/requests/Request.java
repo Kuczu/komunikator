@@ -5,7 +5,6 @@ import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
 import communicatorServer.models.User.User;
 import org.glassfish.grizzly.websockets.WebSocket;
-import socketServerCommunication.ClientSocketHandler;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;

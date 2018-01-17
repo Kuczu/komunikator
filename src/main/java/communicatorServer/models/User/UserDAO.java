@@ -14,6 +14,13 @@ public class UserDAO {
 				.get();
 	}
 	
+	public static User getByNick(String nick) {
+		return DATASTORE.createQuery(User.class)
+				.field(User.NICK)
+				.equal(nick)
+				.get();
+	}
+	
 	public static void save(User user) {
 		DATASTORE.save(user);
 	}

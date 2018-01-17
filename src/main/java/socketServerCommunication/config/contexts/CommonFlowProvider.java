@@ -21,7 +21,7 @@ public class CommonFlowProvider implements FlowContext {
 		this.requestProcessorStepList = ImmutableList.of(DataDecryptorEncryptor.getInstance(), JwtProcessor.getInstance()); // todo from context
 		this.controllerHandler = new ControllerHandler();
 		
-		this.responseProcessorStepList = ImmutableList.of(DataDecryptorEncryptor.getInstance(), JwtProcessor.getInstance());
+		this.responseProcessorStepList = ImmutableList.of(JwtProcessor.getInstance(), DataDecryptorEncryptor.getInstance());
 	}
 	
 	public static CommonFlowProvider getInstance() {

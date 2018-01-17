@@ -78,7 +78,7 @@ public class JwtProcessor implements RequestProcessorStep, ResponseProcessorStep
 			throw new JWTVerificationException("CRITICAL!"); // TODO
 		}
 		
-		User user = UserService.getUserById(userId);
+		User user = UserService.getUserBy(userId);
 		
 		if (user == null) {
 			throw new JWTVerificationException("CRITICAL!"); // TODO
