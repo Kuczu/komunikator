@@ -1,7 +1,7 @@
 //package socketServerCommunication;
 //
 //import communicatorServer.contexts.UserConnectionContext;
-//import communicatorServer.models.User.User;
+//import communicatorServer.models.user.user;
 //import socketServerCommunication.requests.ConnectionRequestStatus;
 //import socketServerCommunication.requests.Request;
 //import socketServerCommunication.requests.SocketRequestParser;
@@ -20,7 +20,7 @@
 //public class ClientSocketHandler implements Runnable {
 //	private static final Logger LOGGER = Logger.getLogger(ClientSocketHandler.class.getName());
 //
-//	private User user;
+//	private user user;
 //
 //	private Socket clientSocket;
 //	private PrintWriter out;
@@ -31,11 +31,11 @@
 //		this.clientSocket = socket;
 //	}
 //
-//	public User getUser() {
+//	public user getUser() {
 //		return user;
 //	}
 //
-////	public void setUserAndSubscribe(User user) {
+////	public void setUserAndSubscribe(user user) {
 ////		this.user = user;
 ////		UserConnectionContext.addLoggedUser(user.getId(), this);
 ////	}

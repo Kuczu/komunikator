@@ -1,4 +1,4 @@
-package communicatorServer.models.User;
+package communicatorServer.models.user;
 
 import communicatorServer.config.ConfigContext;
 import org.bson.types.ObjectId;

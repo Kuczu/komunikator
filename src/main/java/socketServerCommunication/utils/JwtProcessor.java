@@ -9,8 +9,8 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import communicatorServer.config.AppMainConfig;
 import communicatorServer.contexts.UserConnectionContext;
-import communicatorServer.models.User.User;
-import communicatorServer.models.User.UserService;
+import communicatorServer.models.user.User;
+import communicatorServer.models.user.UserService;
 import org.bson.types.ObjectId;
 import socketServerCommunication.requests.Request;
 import socketServerCommunication.requests.RequestProcessorStep;
@@ -84,7 +84,7 @@ public class JwtProcessor implements RequestProcessorStep, ResponseProcessorStep
 			throw new JWTVerificationException("CRITICAL!"); // TODO
 		}
 		
-		request.setUser(user);
+		request.setUserId(userId);
 		
 		if (userSocketId == null) {
 			UserConnectionContext.addLoggedUser(userId, request.getClientWebSocket());
@@ -93,7 +93,7 @@ public class JwtProcessor implements RequestProcessorStep, ResponseProcessorStep
 	
 	@Override
 	public void proceed(Response response) {
-		if (response.getUser() == null) {
+		if (response.getUser() == null || response.getJWT() != null) {
 			return;
 		}
 		

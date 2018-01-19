@@ -3,7 +3,7 @@ package socketServerCommunication.requests;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
-import communicatorServer.models.User.User;
+import org.bson.types.ObjectId;
 import org.glassfish.grizzly.websockets.WebSocket;
 
 import java.util.logging.Level;
@@ -21,7 +21,7 @@ public class Request {
 	private String JWT;
 	private String body;
 	
-	private User user;
+	private ObjectId userId;
 	
 	public Request(String rawRequest, WebSocket clientWebSocket) {
 		this.rawRequest = rawRequest;
@@ -64,16 +64,16 @@ public class Request {
 		this.body = body;
 	}
 	
-	public User getUser() {
-		return user;
+	public ObjectId getUserId() {
+		return userId;
 	}
 	
-	public void setUser(User user) {
-		this.user = user;
+	public void setUserId(ObjectId userId) {
+		this.userId = userId;
 	}
 	
 	public boolean userIsAuthenticated() {
-		return user != null;
+		return userId != null;
 	}
 	
 	public JsonObject getBodyAsJsonObj() {

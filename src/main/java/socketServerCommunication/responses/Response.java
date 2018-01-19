@@ -1,6 +1,6 @@
 package socketServerCommunication.responses;
 
-import communicatorServer.models.User.User;
+import communicatorServer.models.user.User;
 
 public class Response { // TODO add jsonobject inside instead of strings jsonbody, jwt etc
 	private String jsonBody;

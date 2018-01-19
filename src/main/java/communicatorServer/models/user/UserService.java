@@ -1,4 +1,4 @@
-package communicatorServer.models.User;
+package communicatorServer.models.user;
 
 import com.google.common.base.Strings;
 import org.bson.types.ObjectId;
@@ -29,12 +29,12 @@ public class UserService {
 			return user;
 		}
 		
-		return null;
+		throw new IllegalArgumentException("Incorrect password or username.");
 	}
 	
 	public static User addNewUser(String nick, String password) {
 		if (getUserBy(nick) != null) {
-			throw new IllegalArgumentException("User with given nick already exists.");
+			throw new IllegalArgumentException("user with given nick already exists.");
 		}
 		
 		if (Strings.isNullOrEmpty(nick) || Strings.isNullOrEmpty(password)) {
