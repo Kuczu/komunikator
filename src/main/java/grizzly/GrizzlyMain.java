@@ -18,8 +18,7 @@ public class GrizzlyMain {
 	public static void main(String[] args) throws Exception {
 		ConfigManager.initializeConfigContext();
 		
-//		final HttpServer server = HttpServer.createSimpleServer(null, "127.0.0.1", 7777);
-		final HttpServer server = HttpServer.createSimpleServer(null, "10.60.0.84", 7777);
+		final HttpServer server = HttpServer.createSimpleServer(null, "127.0.0.1", 7777);
 		final WebSocketAddOn addon = new WebSocketAddOn();
 		
 		for (NetworkListener listener : server.getListeners()) {

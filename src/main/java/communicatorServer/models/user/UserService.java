@@ -18,6 +18,10 @@ public class UserService {
 		return UserDAO.getByNick(nick);
 	}
 	
+	public static void addFriend(ObjectId userId1, ObjectId userId2) {
+		UserDAO.addFriend(userId1, userId2);
+	}
+	
 	public static User login(String nick, String password) {
 		if (Strings.isNullOrEmpty(nick) || Strings.isNullOrEmpty(password)) {
 			throw new IllegalArgumentException("Nick and password cannot be empty.");

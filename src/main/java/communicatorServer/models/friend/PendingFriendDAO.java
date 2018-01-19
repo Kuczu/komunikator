@@ -38,4 +38,8 @@ public class PendingFriendDAO {
 	public static void save(PendingFriendRequest friendPendingRequest) {
 		DATASTORE.save(friendPendingRequest);
 	}
+	
+	public static void delete(PendingFriendRequest pendingFriendRequest) {
+		DATASTORE.delete(pendingFriendRequest);
+	}
 }

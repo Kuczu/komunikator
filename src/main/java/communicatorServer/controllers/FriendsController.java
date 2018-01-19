@@ -2,6 +2,7 @@ package communicatorServer.controllers;
 
 import communicatorServer.controllers.Config.ApiPath;
 import communicatorServer.controllers.Config.Controller;
+import communicatorServer.models.friend.PendingFriendRequest;
 import communicatorServer.models.friend.PendingFriendService;
 import communicatorServer.models.user.User;
 import communicatorServer.models.user.UserService;
@@ -41,5 +42,36 @@ public class FriendsController {
 		// TODO notify user
 		
 		return new Response("'status':'git'");
+	}
+	
+	@ApiPath(path = "/confirmFriend")
+	public Response confirmFriendship(Request request) {
+		ObjectId userId = request.getUserId();
+		
+		String userNameToAdd = request
+				.getBodyAsJsonObj()
+				.get("userNick")
+				.getAsString();
+		
+		String status = request
+				.getBodyAsJsonObj()
+				.get("status")
+				.getAsString();
+		
+		User user = UserService.getUserBy(userNameToAdd);
+		
+		PendingFriendRequest pendingRequest = PendingFriendService.getPendingRequestFor(userId, user.getId());
+		
+		if (pendingRequest == null) {
+			return new Response("'body':" + "'There is no request to procced'");
+		}
+		
+		if (status.equals("accepted")) {
+			PendingFriendService.acceptRequest(pendingRequest);
+		} else {
+			PendingFriendService.rejectRequest(pendingRequest);
+		}
+		
+		return new Response("'body':" + "'git'");
 	}
 }
