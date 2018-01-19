@@ -1,6 +1,7 @@
 package communicatorServer.controllers;
 
 import com.google.gson.JsonObject;
+import communicatorServer.contexts.ControllersContext;
 import communicatorServer.controllers.Config.ApiPath;
 import communicatorServer.controllers.Config.Controller;
 import communicatorServer.models.user.User;
@@ -43,5 +44,15 @@ public class UserController {
 		} catch (Exception e) {
 			return new Response("'body':" + "'" + e.getMessage() + "'");
 		}
+	}
+	
+	@ApiPath(path = "/friendList")
+	public Response getFriendList(Request request) {
+		User user = UserService.getUserBy(request.getUserId());
+		
+		return new Response(
+				ControllersContext.gson
+						.toJson(user.getFirendsIdList())
+		);
 	}
 }
