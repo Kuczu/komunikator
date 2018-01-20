@@ -1,5 +1,6 @@
 package grizzly;
 
+import communicatorServer.activeUsers.ActiveUsersService;
 import communicatorServer.contexts.UserConnectionContext;
 import org.glassfish.grizzly.websockets.DataFrame;
 import org.glassfish.grizzly.websockets.WebSocket;
@@ -28,7 +29,7 @@ public class ChatApplication extends WebSocketApplication {
 	public void onClose(WebSocket socket, DataFrame frame) {
 		LOGGER.log(Level.INFO, "Ended connection: " + socket.toString());
 		super.onClose(socket, frame);
-		UserConnectionContext.deleteUserSocket(socket);
+		ActiveUsersService.logout(socket);
 	}
 	
 	@Override
