@@ -33,7 +33,7 @@ public class ChatApplication extends WebSocketApplication {
 	
 	@Override
 	public void onMessage(WebSocket socket, String text) {
-		System.out.println("message recived: " + text + " s: " + socket); // TODO remove
+		System.out.println("conversation recived: " + text + " s: " + socket); // TODO remove
 		Request request = new Request(text, socket);
 		
 		try {

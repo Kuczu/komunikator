@@ -46,7 +46,7 @@ public class UserController {
 		}
 	}
 	
-	@ApiPath(path = "/friendList")
+	@ApiPath(path = "/friendList") // TODO get users status
 	public Response getFriendList(Request request) {
 		User user = UserService.getUserBy(request.getUserId());
 		
