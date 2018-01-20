@@ -74,9 +74,13 @@ public class UserService {
 		}
 		
 		userNewActivity
-				.getUnreadMessagesUserIds()
-				.add(wroteUserId);
+				.getUnreadMessagesUsersName()
+				.add(getUserBy(wroteUserId).getNick());
 		
 		UserDAO.save(userNewActivity);
+	}
+	
+	public static UserNewActivity getMessageActivity(ObjectId userId) {
+		return UserDAO.getByUserId(userId);
 	}
 }

@@ -6,10 +6,15 @@ import communicatorServer.activeUsers.NotificationService;
 import communicatorServer.contexts.ControllersContext;
 import communicatorServer.controllers.Config.ApiPath;
 import communicatorServer.controllers.Config.Controller;
+import communicatorServer.models.friend.PendingFriendRequest;
+import communicatorServer.models.friend.PendingFriendService;
 import communicatorServer.models.user.User;
+import communicatorServer.models.user.UserNewActivity;
 import communicatorServer.models.user.UserService;
 import socketServerCommunication.requests.Request;
 import socketServerCommunication.responses.Response;
+
+import java.util.List;
 
 @Controller
 public class UserController {
@@ -60,5 +65,19 @@ public class UserController {
 								.getUsersWithStatus(user.getFirendsIdList())
 						)
 		);
+	}
+	
+	@ApiPath(path = "/lastActivity")
+	public Response getLastActivity(Request request) {
+		List<PendingFriendRequest> pendingFriendRequests = PendingFriendService.getAllPendingRequestsToAccept(request.getUserId());
+		UserNewActivity messageActivity = UserService.getMessageActivity(request.getUserId());
+		
+		JsonObject jsonObject = new JsonObject();
+		jsonObject.addProperty("friendRequests", ControllersContext.gson
+				.toJson(pendingFriendRequests));
+		jsonObject.addProperty("messagesUsersName", ControllersContext.gson
+				.toJson(messageActivity.getUnreadMessagesUsersName()));
+		
+		return new Response(jsonObject.getAsString());
 	}
 }

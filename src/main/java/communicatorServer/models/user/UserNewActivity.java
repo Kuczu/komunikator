@@ -11,14 +11,14 @@ import java.util.Set;
 public class UserNewActivity {
 	public static final String ID = "_id";
 	public static final String USER_ID = "userId";
-	public static final String UNREAD_MESSAGES_USER_IDS = "unreadMessagesUserIds";
+	public static final String UNREAD_MESSAGES_USER_IDS = "unreadMessagesUsersName";
 	
 	@Id
 	private ObjectId id;
 	
 	@Indexed
 	private ObjectId userId;
-	private Set<ObjectId> unreadMessagesUserIds;
+	private Set<String> unreadMessagesUsersName;
 	
 	public ObjectId getId() {
 		return id;
@@ -36,11 +36,11 @@ public class UserNewActivity {
 		this.userId = userId;
 	}
 	
-	public Set<ObjectId> getUnreadMessagesUserIds() {
-		return unreadMessagesUserIds;
+	public Set<String> getUnreadMessagesUsersName() {
+		return unreadMessagesUsersName;
 	}
 	
-	public void setUnreadMessagesUserIds(Set<ObjectId> unreadMessagesUserIds) {
-		this.unreadMessagesUserIds = unreadMessagesUserIds;
+	public void setUnreadMessagesUsersName(Set<String> unreadMessagesUsersName) {
+		this.unreadMessagesUsersName = unreadMessagesUsersName;
 	}
 }

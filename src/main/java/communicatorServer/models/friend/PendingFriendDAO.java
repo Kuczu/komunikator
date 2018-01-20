@@ -12,14 +12,10 @@ public class PendingFriendDAO {
 	private static final Datastore DATASTORE = ConfigContext.getDatastore();
 	
 	public static List<PendingFriendRequest> getByUserId(ObjectId userId) {
-		Query<PendingFriendRequest> query = DATASTORE.createQuery(PendingFriendRequest.class);
-		
-		query.or(
-				query.criteria(PendingFriendRequest.ASKED_USER_ID).equal(userId),
-				query.criteria(PendingFriendRequest.REQUESTING_USER_ID).equal(userId)
-		);
-		
-		return query.asList();
+		return DATASTORE.createQuery(PendingFriendRequest.class)
+				.field(PendingFriendRequest.ASKED_USER_ID)
+				.equal(userId)
+				.asList();
 	}
 	
 	public static PendingFriendRequest getByUsersId(ObjectId userId, ObjectId userId2) {

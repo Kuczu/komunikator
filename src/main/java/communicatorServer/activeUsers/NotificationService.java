@@ -57,8 +57,8 @@ public class NotificationService {
 		UserConnectionContext.sendNotification(pendingFriendRequest.getAskedUserId(), response);
 	}
 	
-	public static void notifyAboutFriendStatusChange(PendingFriendRequest pendingFriendRequest, boolean staus) {
-		if (!staus) {
+	public static void notifyAboutFriendStatusChange(PendingFriendRequest pendingFriendRequest, boolean status) {
+		if (!status) {
 			return; // TODO for now if rejected do nothing
 		}
 		
