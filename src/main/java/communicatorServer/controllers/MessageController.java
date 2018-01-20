@@ -27,7 +27,7 @@ public class MessageController {
 		
 		User friendUser = UserService.getUserBy(friendUserName);
 		
-		if (!friendUser.getFirendsIdList().contains(userId)) {
+		if (!UserService.usersAreFriends(friendUser, userId)) {
 			return new Response("'body':" + "'Users are not friends'");
 		}
 		

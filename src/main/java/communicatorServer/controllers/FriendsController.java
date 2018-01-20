@@ -29,7 +29,7 @@ public class FriendsController {
 			return new Response("'body':" + "'User with given name doesn't exists'");
 		}
 		
-		if (userToAdd.getFirendsIdList().contains(userId)) {
+		if (UserService.usersAreFriends(userToAdd, userId)) {
 			return new Response("'body':" + "'Users are already friends'");
 		}
 		

@@ -5,6 +5,7 @@ import com.google.common.collect.SetMultimap;
 import org.bson.types.ObjectId;
 import org.glassfish.grizzly.websockets.WebSocket;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Set;
 
@@ -37,5 +38,9 @@ public class UserConnectionContext {
 	
 	public synchronized static Set<WebSocket> getUserSockets(ObjectId userId) {
 		return USERID_TO_SOCKETS_MAP.get(userId);
+	}
+	
+	public synchronized static Set<ObjectId> getLoggedUsersId() {
+		return Collections.unmodifiableSet(USERID_TO_SOCKETS_MAP.keySet());
 	}
 }

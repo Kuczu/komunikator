@@ -28,13 +28,20 @@ public class UserDAO {
 	}
 	
 	public static void addFriend(ObjectId userId1, ObjectId userId2) {
-		addFriendForOneUser(userId1, userId2);
-		addFriendForOneUser(userId2, userId1);
+		User user1 = getById(userId1);
+		User user2 = getById(userId2);
+		
+		addFriendForOneUser(user1, user2);
+		addFriendForOneUser(user2, user1);
 	}
 	
-	private static void addFriendForOneUser(ObjectId userId1, ObjectId userId2) {
-		Query<User> user1q = DATASTORE.createQuery(User.class).field(User.ID).equal(userId1);
-		UpdateOperations<User> user1u = DATASTORE.createUpdateOperations(User.class).addToSet(User.FRIENDS_ID_LIST, userId2);
+	private static void addFriendForOneUser(User user1, User user2) {
+		FriendEntity friendEntity = new FriendEntity();
+		friendEntity.setNick(user2.getNick());
+		friendEntity.setUserId(user2.getId());
+		
+		Query<User> user1q = DATASTORE.createQuery(User.class).field(User.ID).equal(user1.getId());
+		UpdateOperations<User> user1u = DATASTORE.createUpdateOperations(User.class).addToSet(User.FRIENDS_ID_LIST, friendEntity);
 		
 		DATASTORE.update(user1q, user1u);
 	}

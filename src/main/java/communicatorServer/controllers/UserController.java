@@ -1,6 +1,7 @@
 package communicatorServer.controllers;
 
 import com.google.gson.JsonObject;
+import communicatorServer.activeUsers.ActiveUsersService;
 import communicatorServer.contexts.ControllersContext;
 import communicatorServer.controllers.Config.ApiPath;
 import communicatorServer.controllers.Config.Controller;
@@ -46,13 +47,15 @@ public class UserController {
 		}
 	}
 	
-	@ApiPath(path = "/friendList") // TODO get users status
+	@ApiPath(path = "/friendList")
 	public Response getFriendList(Request request) {
 		User user = UserService.getUserBy(request.getUserId());
 		
 		return new Response(
 				ControllersContext.gson
-						.toJson(user.getFirendsIdList())
+						.toJson(ActiveUsersService
+								.getUsersWithStatus(user.getFirendsIdList())
+						)
 		);
 	}
 }

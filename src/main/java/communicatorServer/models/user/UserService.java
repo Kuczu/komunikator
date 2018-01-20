@@ -6,6 +6,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Date;
+import java.util.stream.Collectors;
 
 public class UserService {
 	private final static PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
@@ -53,5 +54,14 @@ public class UserService {
 		UserDAO.save(user);
 		
 		return user;
+	}
+	
+	public static boolean usersAreFriends(User user, ObjectId userId) {
+		return user
+				.getFirendsIdList()
+				.stream()
+				.map(FriendEntity::getUserId)
+				.collect(Collectors.toList())
+				.contains(userId);
 	}
 }

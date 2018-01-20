@@ -23,7 +23,7 @@ public class User {
 	private String password;
 	private Date joinDate;
 	
-	private List<ObjectId> firendsIdList;
+	private List<FriendEntity> firendsIdList;
 	
 	public ObjectId getId() {
 		return id;
@@ -57,7 +57,7 @@ public class User {
 		this.joinDate = joinDate;
 	}
 	
-	public List<ObjectId> getFirendsIdList() {
+	public List<FriendEntity> getFirendsIdList() {
 		if (firendsIdList == null) {
 			return new ArrayList<>();
 		}
@@ -65,7 +65,7 @@ public class User {
 		return firendsIdList;
 	}
 	
-	public void setFirendsIdList(List<ObjectId> firendsIdList) {
+	public void setFirendsIdList(List<FriendEntity> firendsIdList) {
 		this.firendsIdList = new ArrayList<>(firendsIdList);
 	}
 }
