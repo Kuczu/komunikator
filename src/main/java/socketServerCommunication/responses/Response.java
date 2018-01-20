@@ -6,6 +6,7 @@ public class Response { // TODO add jsonobject inside instead of strings jsonbod
 	private String jsonBody;
 	private String encodedData;
 	private String JWT;
+	private String clientAppApiPath;
 	
 	private User user;
 	
@@ -42,6 +43,14 @@ public class Response { // TODO add jsonobject inside instead of strings jsonbod
 	
 	public void setJWT(String JWT) {
 		this.JWT = JWT;
+	}
+	
+	public String getClientAppApiPath() {
+		return clientAppApiPath;
+	}
+	
+	public void setClientAppApiPath(String clientAppApiPath) {
+		this.clientAppApiPath = clientAppApiPath;
 	}
 	
 	public String getEncodedData() {

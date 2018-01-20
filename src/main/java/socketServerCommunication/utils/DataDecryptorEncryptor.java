@@ -61,6 +61,10 @@ public class DataDecryptorEncryptor implements RequestProcessorStep, ResponsePro
 			jsonObject.addProperty("data", response.getJsonBody());
 		}
 		
+		if (response.getClientAppApiPath() != null) {
+			jsonObject.addProperty("apiPath", response.getClientAppApiPath());
+		}
+		
 		response.setEncodedData(
 				new String(Base64
 						.getEncoder()

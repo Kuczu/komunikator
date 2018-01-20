@@ -14,7 +14,7 @@ public class SocketContextsProvider {
 	// TODO get instances for socket server config and build it
 	public static final FlowContext FLOW_CONTEXT = CommonFlowProvider.getInstance();
 	private static final RequestProcessor REQUEST_PROCESSOR = RequestResponseBuilder.buildRequestProcessor(FLOW_CONTEXT);
-	private static final ResponseProcessor RESPONSE_PROCESSOR = RequestResponseBuilder.buildResponseProcessor(FLOW_CONTEXT);
+	public static final ResponseProcessor RESPONSE_PROCESSOR = RequestResponseBuilder.buildResponseProcessor(FLOW_CONTEXT);
 	public static final RequestResponseManager REQUEST_RESPONSE_MANAGER = new RequestResponseManager(RESPONSE_PROCESSOR, REQUEST_PROCESSOR, FLOW_CONTEXT.getControllerHandler());
 	private static final SocketRequestParserFactory SOCKET_REQUEST_PARSER_FACTORY = new TCPRequestParserFactory();
 	

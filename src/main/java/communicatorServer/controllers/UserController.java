@@ -2,6 +2,7 @@ package communicatorServer.controllers;
 
 import com.google.gson.JsonObject;
 import communicatorServer.activeUsers.ActiveUsersService;
+import communicatorServer.activeUsers.NotificationService;
 import communicatorServer.contexts.ControllersContext;
 import communicatorServer.controllers.Config.ApiPath;
 import communicatorServer.controllers.Config.Controller;
@@ -40,6 +41,8 @@ public class UserController {
 			
 			Response response = new Response(user);
 			response.setJsonBody("'status':'git'");
+			
+			NotificationService.notifyAboutStatusChange(user, true);
 			
 			return response;
 		} catch (Exception e) {

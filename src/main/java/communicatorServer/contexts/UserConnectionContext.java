@@ -4,9 +4,11 @@ import com.google.common.collect.MultimapBuilder;
 import com.google.common.collect.SetMultimap;
 import org.bson.types.ObjectId;
 import org.glassfish.grizzly.websockets.WebSocket;
+import socketServerCommunication.responses.Response;
 
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Set;
 
 public class UserConnectionContext {
@@ -42,5 +44,23 @@ public class UserConnectionContext {
 	
 	public synchronized static Set<ObjectId> getLoggedUsersId() {
 		return Collections.unmodifiableSet(USERID_TO_SOCKETS_MAP.keySet());
+	}
+	
+	public synchronized static Set<ObjectId> sendNotification(Set<ObjectId> usersToNotify, Response response) {
+		Set<ObjectId> inactiveUserTds = new HashSet<>();
+		
+		Set<WebSocket> userSockets;
+		for (ObjectId userId : usersToNotify) {
+			userSockets = USERID_TO_SOCKETS_MAP.get(userId);
+			if (userSockets != null) {
+				for (WebSocket userSocket : userSockets) {
+					userSocket.send(response.getResponseToSend());
+				}
+			} else {
+				inactiveUserTds.add(userId);
+			}
+		}
+		
+		return inactiveUserTds;
 	}
 }

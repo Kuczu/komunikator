@@ -10,6 +10,12 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 public class ActiveUsersService {
+	public static boolean getUserStatus(ObjectId userId) {
+		Set<ObjectId> loggedUsersId = UserConnectionContext.getLoggedUsersId();
+		
+		return loggedUsersId.contains(userId);
+	}
+	
 	public static List<UserWithSatus> getUsersWithStatus(Collection<FriendEntity> friendEntities) {
 		Set<ObjectId> loggedUsersId = UserConnectionContext.getLoggedUsersId();
 		
