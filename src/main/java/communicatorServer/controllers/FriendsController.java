@@ -1,5 +1,9 @@
 package communicatorServer.controllers;
 
+import communicatorServer.activeUsers.ActiveUsersService;
+import communicatorServer.activeUsers.NotificationService;
+import communicatorServer.activeUsers.UserWithStatus;
+import communicatorServer.contexts.ControllersContext;
 import communicatorServer.controllers.Config.ApiPath;
 import communicatorServer.controllers.Config.Controller;
 import communicatorServer.models.friend.PendingFriendRequest;
@@ -37,9 +41,9 @@ public class FriendsController {
 			return new Response("'body':" + "'Request already is pending'");
 		}
 		
-		PendingFriendService.addPendingRequest(userId, userToAdd.getId());
+		PendingFriendRequest pendingFriendRequest = PendingFriendService.addPendingRequest(userId, userToAdd.getId());
 		
-		// TODO notify user
+		NotificationService.notifyAboutFriendRequest(pendingFriendRequest);
 		
 		return new Response("'status':'git'");
 	}
@@ -53,7 +57,7 @@ public class FriendsController {
 				.get("userNick")
 				.getAsString();
 		
-		String status = request
+		String requestStatus = request
 				.getBodyAsJsonObj()
 				.get("status")
 				.getAsString();
@@ -66,10 +70,16 @@ public class FriendsController {
 			return new Response("'body':" + "'There is no request to procced'");
 		}
 		
-		if (status.equals("accepted")) {
-			PendingFriendService.acceptRequest(pendingRequest);
-		} else {
-			PendingFriendService.rejectRequest(pendingRequest);
+		boolean status = requestStatus.equals("accepted");
+		
+		PendingFriendService.changeStatus(pendingRequest, status);
+		
+		NotificationService.notifyAboutFriendStatusChange(pendingRequest, status);
+		
+		if (status) {
+			UserWithStatus userWithStatus = ActiveUsersService.getUserWithStatus(user);
+			return new Response(ControllersContext.gson
+					.toJson(userWithStatus));
 		}
 		
 		return new Response("'body':" + "'git'");

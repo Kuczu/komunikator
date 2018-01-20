@@ -33,18 +33,26 @@ public class ActiveUsersService {
 		}
 	}
 	
+	public static UserWithStatus getUserWithStatus(User user) {
+		return new UserWithStatus(user.getNick(), getUserStatus(user.getId()));
+	}
+	
+	public static UserWithStatus getUserWithStatus(ObjectId userId) {
+		return getUserWithStatus(UserService.getUserBy(userId));
+	}
+	
 	public static boolean getUserStatus(ObjectId userId) {
 		Set<ObjectId> loggedUsersId = UserConnectionContext.getLoggedUsersId();
 		
 		return loggedUsersId.contains(userId);
 	}
 	
-	public static List<UserWithSatus> getUsersWithStatus(Collection<FriendEntity> friendEntities) {
+	public static List<UserWithStatus> getUsersWithStatus(Collection<FriendEntity> friendEntities) {
 		Set<ObjectId> loggedUsersId = UserConnectionContext.getLoggedUsersId();
 		
 		return friendEntities
 				.stream()
-				.map(e -> new UserWithSatus(
+				.map(e -> new UserWithStatus(
 						e.getNick(),
 						loggedUsersId.contains(e.getUserId()))
 				).collect(Collectors.toList());

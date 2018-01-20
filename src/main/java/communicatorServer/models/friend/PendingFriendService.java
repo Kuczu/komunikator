@@ -8,6 +8,14 @@ public class PendingFriendService {
 		return PendingFriendDAO.getByUsersId(userId1, userId2);
 	}
 	
+	public static void changeStatus(PendingFriendRequest pendingFriendRequest, boolean status) {
+		if (status) {
+			acceptRequest(pendingFriendRequest);
+		} else {
+			rejectRequest(pendingFriendRequest);
+		}
+	}
+	
 	public static void acceptRequest(PendingFriendRequest pendingFriendRequest) {
 		UserService.addFriend(pendingFriendRequest.getAskedUserId(), pendingFriendRequest.getRequestingUserId());
 		PendingFriendDAO.delete(pendingFriendRequest);
@@ -17,11 +25,13 @@ public class PendingFriendService {
 		PendingFriendDAO.delete(pendingFriendRequest);
 	}
 	
-	public static void addPendingRequest(ObjectId requestingUser, ObjectId askedUser) {
+	public static PendingFriendRequest addPendingRequest(ObjectId requestingUser, ObjectId askedUser) {
 		PendingFriendRequest pendingFriendRequest = new PendingFriendRequest();
 		pendingFriendRequest.setRequestingUserId(requestingUser);
 		pendingFriendRequest.setAskedUserId(askedUser);
 		
 		PendingFriendDAO.save(pendingFriendRequest);
+		
+		return pendingFriendRequest;
 	}
 }

@@ -3,6 +3,7 @@ package communicatorServer.activeUsers;
 import communicatorServer.contexts.ControllersContext;
 import communicatorServer.contexts.UserConnectionContext;
 import communicatorServer.models.conversation.Message;
+import communicatorServer.models.friend.PendingFriendRequest;
 import communicatorServer.models.user.FriendEntity;
 import communicatorServer.models.user.User;
 import communicatorServer.models.user.UserService;
@@ -37,7 +38,7 @@ public class NotificationService {
 				.collect(Collectors.toSet());
 		
 		String body = ControllersContext.gson
-				.toJson(new UserWithSatus(user.getNick(), status));
+				.toJson(new UserWithStatus(user.getNick(), status));
 		
 		Response response = new Response(body);
 		response.setClientAppApiPath("/userStatus");
@@ -46,11 +47,27 @@ public class NotificationService {
 		UserConnectionContext.sendNotification(friendsId, response);
 	}
 	
-	public static void notifyAboutFriendRequest(ObjectId friendIdToNotify) {
-	
+	public static void notifyAboutFriendRequest(PendingFriendRequest pendingFriendRequest) {
+		User user = UserService.getUserBy(pendingFriendRequest.getRequestingUserId());
+		
+		Response response = new Response("'askingUser:'" + user.getNick() + "''");
+		response.setClientAppApiPath("/newFriendRequest");
+		DataDecryptorEncryptor.getInstance().proceed(response);
+		
+		UserConnectionContext.sendNotification(pendingFriendRequest.getAskedUserId(), response);
 	}
 	
-	public static void notifyAboutFriendStatusChange(/*TODO*/) {
-	
+	public static void notifyAboutFriendStatusChange(PendingFriendRequest pendingFriendRequest, boolean staus) {
+		if (!staus) {
+			return; // TODO for now if rejected do nothing
+		}
+		
+		UserWithStatus userWithStatus = ActiveUsersService.getUserWithStatus(pendingFriendRequest.getRequestingUserId());
+		Response response = new Response(ControllersContext.gson
+				.toJson(userWithStatus));
+		response.setClientAppApiPath("/friendAccepted");
+		DataDecryptorEncryptor.getInstance().proceed(response);
+		
+		UserConnectionContext.sendNotification(pendingFriendRequest.getAskedUserId(), response);
 	}
 }

@@ -1,10 +1,10 @@
 package communicatorServer.activeUsers;
 
-public class UserWithSatus {
+public class UserWithStatus {
 	private String nick;
 	private boolean status;
 	
-	public UserWithSatus(String nick, boolean status) {
+	public UserWithStatus(String nick, boolean status) {
 		this.nick = nick;
 		this.status = status;
 	}

@@ -18,7 +18,7 @@ public class PendingFriendRequest {
 	
 	@Indexed
 	private ObjectId requestingUserId;
-	@Indexed
+	@Indexed // user to add
 	private ObjectId askedUserId;
 	private Date addDate;
 	
