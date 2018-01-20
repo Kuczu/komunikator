@@ -49,18 +49,28 @@ public class UserConnectionContext {
 	public synchronized static Set<ObjectId> sendNotification(Set<ObjectId> usersToNotify, Response response) {
 		Set<ObjectId> inactiveUserTds = new HashSet<>();
 		
-		Set<WebSocket> userSockets;
 		for (ObjectId userId : usersToNotify) {
-			userSockets = USERID_TO_SOCKETS_MAP.get(userId);
-			if (userSockets != null) {
-				for (WebSocket userSocket : userSockets) {
-					userSocket.send(response.getResponseToSend());
-				}
-			} else {
+			boolean userStatus = sendNotification(userId, response);
+			
+			if (!userStatus) {
 				inactiveUserTds.add(userId);
 			}
 		}
 		
 		return inactiveUserTds;
+	}
+	
+	public synchronized static boolean sendNotification(ObjectId userIdToNotify, Response response) {
+		Set<WebSocket> userSockets = USERID_TO_SOCKETS_MAP.get(userIdToNotify);
+		
+		if (userSockets == null) {
+			return false;
+		}
+		
+		for (WebSocket userSocket : userSockets) {
+			userSocket.send(response.getResponseToSend());
+		}
+		
+		return true;
 	}
 }

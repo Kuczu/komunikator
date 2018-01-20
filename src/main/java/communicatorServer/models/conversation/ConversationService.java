@@ -10,7 +10,7 @@ public class ConversationService {
 		return ConversationDAO.getByUsersId(userId1, userId2);
 	}
 	
-	public static void addMessages(ObjectId userIdWriter, ObjectId userIdReciver, String messageData) {
+	public static Message addMessages(ObjectId userIdWriter, ObjectId userIdReciver, String messageData) {
 		Message message = new Message();
 		message.setDate(new Date());
 		message.setUserId(userIdWriter);
@@ -24,5 +24,7 @@ public class ConversationService {
 		}
 		
 		ConversationDAO.addMessage(message, userIdReciver);
+		
+		return message;
 	}
 }

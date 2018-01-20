@@ -64,4 +64,19 @@ public class UserService {
 				.collect(Collectors.toList())
 				.contains(userId);
 	}
+	
+	public static void addUserMessageActivity(ObjectId userId, ObjectId wroteUserId) {
+		UserNewActivity userNewActivity = UserDAO.getByUserId(userId);
+		
+		if (userNewActivity == null) {
+			userNewActivity = new UserNewActivity();
+			userNewActivity.setUserId(userId);
+		}
+		
+		userNewActivity
+				.getUnreadMessagesUserIds()
+				.add(wroteUserId);
+		
+		UserDAO.save(userNewActivity);
+	}
 }

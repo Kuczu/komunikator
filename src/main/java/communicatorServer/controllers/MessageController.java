@@ -1,6 +1,7 @@
 package communicatorServer.controllers;
 
 import com.google.common.base.Strings;
+import communicatorServer.activeUsers.NotificationService;
 import communicatorServer.contexts.ControllersContext;
 import communicatorServer.controllers.Config.ApiPath;
 import communicatorServer.controllers.Config.Controller;
@@ -31,17 +32,19 @@ public class MessageController {
 			return new Response("'body':" + "'Users are not friends'");
 		}
 		
-		String message = request
+		String messageContent = request
 				.getBodyAsJsonObj()
 				.get("message")
 				.getAsString();
 		
-		if (Strings.isNullOrEmpty(message)) {
+		if (Strings.isNullOrEmpty(messageContent)) {
 			return new Response("'body':" + "'Message cannot be empty'");
 		}
 		
-		ConversationService.addMessages(userId, friendUser.getId(), message);
-		// TODO notify
+		Message message = ConversationService.addMessages(userId, friendUser.getId(), messageContent);
+		
+		NotificationService.notifyAboutMessage(message, friendUser.getId());
+		
 		return new Response("'body':" + "'git'");
 	}
 	

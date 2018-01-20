@@ -23,8 +23,19 @@ public class UserDAO {
 				.get();
 	}
 	
+	public static UserNewActivity getByUserId(ObjectId userId) {
+		return DATASTORE.createQuery(UserNewActivity.class)
+				.field(UserNewActivity.USER_ID)
+				.equal(userId)
+				.get();
+	}
+	
 	public static void save(User user) {
 		DATASTORE.save(user);
+	}
+	
+	public static void save(UserNewActivity userNewActivity) {
+		DATASTORE.save(userNewActivity);
 	}
 	
 	public static void addFriend(ObjectId userId1, ObjectId userId2) {

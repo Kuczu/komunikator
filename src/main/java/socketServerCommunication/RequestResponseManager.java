@@ -31,6 +31,10 @@ public class RequestResponseManager {
 			response.setUser(user);
 		}
 		
+		if (response.getClientAppApiPath() == null) {
+			response.setClientAppApiPath(request.getApiPath());
+		}
+		
 		responseProcessor.proceed(response);
 		
 		return response;
