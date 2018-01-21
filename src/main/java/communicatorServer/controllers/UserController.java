@@ -86,6 +86,8 @@ public class UserController {
 		if (messageActivity != null) {
 			jsonObject.addProperty("messagesUsersName", ControllersContext.GSON
 					.toJson(messageActivity.getUnreadMessagesUsersName()));
+			
+			UserService.delete(messageActivity);
 		}
 		
 		return new Response(ControllersContext.GSON.toJson(jsonObject));

@@ -197,7 +197,7 @@
 
     function onMessage(evt) {
         var decodedMsg = Base64Decode(evt.data);
-        writeToScreen('<span style="color: blue;">RESPONSE encoded: ' + evt.data + '</span>');
+        // writeToScreen('<span style="color: blue;">RESPONSE encoded: ' + evt.data + '</span>'); // TODO
         writeToScreen('<span style="color: blue;">RESPONSE decoded: ' + decodedMsg + '</span>');
         var jwt = JSON.parse(decodedMsg).JWT;
 
@@ -211,7 +211,7 @@
     }
 
     function doSend(message) {
-        writeToScreen("SENT encoded: " + message);
+        // writeToScreen("SENT encoded: " + message); // TODO
         writeToScreen("SENT decoded: " + Base64Decode(message));
         websocket.send(message);
     }

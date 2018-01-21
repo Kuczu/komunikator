@@ -38,7 +38,6 @@ public class ConversationDAO {
 				query.criteria(Conversation.USER_ID_2).hasAnyOf(usersId)
 		);
 		
-		return query
-				.get();
+		return query.get();
 	}
 }

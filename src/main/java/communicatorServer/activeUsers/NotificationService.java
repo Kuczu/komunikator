@@ -68,6 +68,6 @@ public class NotificationService {
 		response.setClientAppApiPath("/friendAccepted");
 		DataDecryptorEncryptor.getInstance().proceed(response);
 		
-		UserConnectionContext.sendNotification(pendingFriendRequest.getAskedUserId(), response);
+		UserConnectionContext.sendNotification(pendingFriendRequest.getRequestingUserId(), response);
 	}
 }

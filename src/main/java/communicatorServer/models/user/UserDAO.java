@@ -38,6 +38,10 @@ public class UserDAO {
 		DATASTORE.save(userNewActivity);
 	}
 	
+	public static void delete(UserNewActivity userNewActivity) {
+		DATASTORE.delete(userNewActivity);
+	}
+	
 	public static void addFriend(ObjectId userId1, ObjectId userId2) {
 		User user1 = getById(userId1);
 		User user2 = getById(userId2);

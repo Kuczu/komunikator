@@ -12,11 +12,10 @@ public class ControllerHandler {
 		ControllerInstance controllerInstance = ConfigContext.getControllerInstanceForApiPath(request.getApiPath());
 		
 		if (controllerInstance.isAuthenticationNeeded() != request.userIsAuthenticated()) {
-			throw new IllegalCallerException(); // TODO
+			throw new IllegalCallerException("User is not authenticated!"); // TODO
 		}
 		
-		Response response = controllerInstance.invokeControllerMethod(request);
-		return response;
+		return controllerInstance.invokeControllerMethod(request);
 	}
 	//TODO
 }

@@ -89,4 +89,8 @@ public class UserService {
 	public static UserNewActivity getMessageActivity(ObjectId userId) {
 		return UserDAO.getByUserId(userId);
 	}
+	
+	public static void delete(UserNewActivity userNewActivity) {
+		UserDAO.delete(userNewActivity);
+	}
 }
