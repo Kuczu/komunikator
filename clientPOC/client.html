@@ -24,8 +24,8 @@
             </div>
 
             <div class="form-group" style="margin-bottom: 0">
-                <label class="col-sm-3 col-form-label" for="api-path">Api path</label>
-                <select type="text" class="col-sm-3" id="api-path">
+                <label class="col-sm-3 col-form-label" for="apiPath">Api path</label>
+                <select type="text" class="col-sm-3" id="apiPath">
                 </select>
             </div>
 
@@ -84,7 +84,7 @@
 </div>
 
 <script language="javascript" type="text/javascript">
-    var apiPathField = $("#api-path");
+    var apiPathField = $("#apiPath");
     var loginField = $("#nick");
     var passwordField = $("#password");
     var userNickField = $("#userNick");
@@ -122,13 +122,19 @@
     }
 
     function showActiveApi() {
+        var activeFieldsList = getActiveFormFields();
+
+        for (var j = 0; j < activeFieldsList.requiredFieldsList.length; j++) {
+            activeFieldsList.requiredFieldsList[j].closest(".form-group").show();
+        }
+    }
+
+    function getActiveFormFields() {
         var activeApiPath = apiPathField.val();
 
         for (var i = 0; i < formFieldsListWithApiPath.length; i++) {
             if (formFieldsListWithApiPath[i].apiPath === activeApiPath) {
-                for (var j = 0; j < formFieldsListWithApiPath[i].requiredFieldsList.length; j++) {
-                    formFieldsListWithApiPath[i].requiredFieldsList[j].closest(".form-group").show();
-                }
+                return formFieldsListWithApiPath[i];
             }
         }
     }
@@ -139,7 +145,7 @@
         hideAllFields();
         showActiveApi();
     });
-    
+
     var websocket;
     var output;
     var JWT;
@@ -177,7 +183,7 @@
     }
 
     function onMessage(evt) {
-        writeToScreen('<span style="color: blue;">RESPONSE: ' + Base64Decode(evt.data) + '</span>');
+        writeToScreen('<span style="color: blue;">RESPONSE decoded: ' + Base64Decode(evt.data) + '</span>');
     }
 
     function onError(evt) {
@@ -185,7 +191,8 @@
     }
 
     function doSend(message) {
-        writeToScreen("SENT: " + message);
+        writeToScreen("SENT encoded: " + message);
+        writeToScreen("SENT decoded: " + Base64Decode(message));
         websocket.send(message);
     }
 
@@ -205,11 +212,22 @@
     });
 
     $("#send").click(function () {
-        var login = new Login($("#nick").val(), $("#password").val());
-        var jsonToSend = {
-            "apiPath": "/login",
-            "data": login
-        };
+        var jsonToSend = {};
+        var activeFields = getActiveFormFields();
+
+        var body = {};
+        for (var j = 0; j < activeFields.requiredFieldsList.length; j++) {
+            var val = activeFields.requiredFieldsList[j].val();
+
+            if (val.length !== 0) {
+                body[activeFields.requiredFieldsList[j].attr("id")] = val;
+            }
+        }
+
+        jsonToSend['apiPath'] = activeFields.apiPath;
+        jsonToSend['data'] = body;
+        //TODO JWT
+
         dataToSend = JSON.stringify(jsonToSend);
         console.log(dataToSend);
         doSend(Base64Encode(dataToSend));
