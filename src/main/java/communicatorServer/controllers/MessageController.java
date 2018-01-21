@@ -41,7 +41,7 @@ public class MessageController {
 			return new Response("'body':" + "'Message cannot be empty'");
 		}
 		
-		Message message = ConversationService.addMessages(userId, friendUser.getId(), messageContent);
+		Message message = ConversationService.addMessages(UserService.getUserBy(userId), friendUser.getId(), messageContent);
 		
 		NotificationService.notifyAboutMessage(message, friendUser.getId());
 		

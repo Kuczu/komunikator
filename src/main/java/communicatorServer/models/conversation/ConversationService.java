@@ -1,5 +1,6 @@
 package communicatorServer.models.conversation;
 
+import communicatorServer.models.user.User;
 import org.bson.types.ObjectId;
 
 import java.util.ArrayList;
@@ -17,17 +18,18 @@ public class ConversationService {
 		return new ArrayList<>(0);
 	}
 	
-	public static Message addMessages(ObjectId userIdWriter, ObjectId userIdReciver, String messageData) {
+	public static Message addMessages(User userIdWriter, ObjectId userIdReciver, String messageData) {
 		Message message = new Message();
 		message.setDate(new Date());
-		message.setUserId(userIdWriter);
+		message.setUserId(userIdWriter.getId());
+		message.setUserName(userIdWriter.getNick());
 		message.setMessage(messageData);
 		
-		Conversation conversation = ConversationDAO.getByUsersId(userIdWriter, userIdReciver);
+		Conversation conversation = ConversationDAO.getByUsersId(userIdWriter.getId(), userIdReciver);
 		
 		if (conversation == null) {
 			conversation = new Conversation();
-			conversation.setUserId1(userIdWriter);
+			conversation.setUserId1(userIdWriter.getId());
 			conversation.setUserId2(userIdReciver);
 		}
 		

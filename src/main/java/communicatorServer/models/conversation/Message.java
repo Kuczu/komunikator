@@ -7,6 +7,7 @@ import java.util.Date;
 public class Message {
 	private String message;
 	private ObjectId userId;
+	private String userName;
 	private Date date;
 	
 	public String getMessage() {
@@ -23,6 +24,14 @@ public class Message {
 	
 	public void setUserId(ObjectId userId) {
 		this.userId = userId;
+	}
+	
+	public String getUserName() {
+		return userName;
+	}
+	
+	public void setUserName(String userName) {
+		this.userName = userName;
 	}
 	
 	public Date getDate() {
