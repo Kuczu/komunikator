@@ -26,11 +26,6 @@
             <div class="form-group" style="margin-bottom: 0">
                 <label class="col-sm-3 col-form-label" for="api-path">Api path</label>
                 <select type="text" class="col-sm-3" id="api-path">
-                    <option>1</option>
-                    <option>2</option>
-                    <option>3</option>
-                    <option>4</option>
-                    <option>5</option>
                 </select>
             </div>
 
@@ -89,6 +84,62 @@
 </div>
 
 <script language="javascript" type="text/javascript">
+    var apiPathField = $("#api-path");
+    var loginField = $("#nick");
+    var passwordField = $("#password");
+    var userNickField = $("#userNick");
+    var statusField = $("#status");
+    var messageField = $("#message");
+
+    var formFields = [loginField, passwordField, userNickField, statusField, messageField];
+
+    function hideAllFields() {
+        for (var i = 0; i < formFields.length; i++) {
+            formFields[i].closest(".form-group").hide();
+        }
+    }
+
+    var formFieldsListWithApiPath = [];
+
+    function FormFields(apiPath, requiredFieldsList) {
+        this.apiPath = apiPath;
+        this.requiredFieldsList = requiredFieldsList;
+    }
+
+    formFieldsListWithApiPath.push(new FormFields("/login", [loginField, passwordField]));
+    formFieldsListWithApiPath.push(new FormFields("/register", [loginField, passwordField]));
+    formFieldsListWithApiPath.push(new FormFields("/friendList", []));
+    formFieldsListWithApiPath.push(new FormFields("/lastActivity", []));
+    formFieldsListWithApiPath.push(new FormFields("/addToFriend", [userNickField]));
+    formFieldsListWithApiPath.push(new FormFields("/confirmFriend", [userNickField, statusField]));
+    formFieldsListWithApiPath.push(new FormFields("/sendMessage", [userNickField, messageField]));
+    formFieldsListWithApiPath.push(new FormFields("/getMessages", [userNickField]));
+
+    hideAllFields();
+
+    for (var i = 0; i < formFieldsListWithApiPath.length; i++) {
+        apiPathField.append("<option>" + formFieldsListWithApiPath[i].apiPath + "</option>");
+    }
+
+    function showActiveApi() {
+        var activeApiPath = apiPathField.val();
+
+        for (var i = 0; i < formFieldsListWithApiPath.length; i++) {
+            if (formFieldsListWithApiPath[i].apiPath === activeApiPath) {
+                for (var j = 0; j < formFieldsListWithApiPath[i].requiredFieldsList.length; j++) {
+                    formFieldsListWithApiPath[i].requiredFieldsList[j].closest(".form-group").show();
+                }
+            }
+        }
+    }
+
+    showActiveApi();
+
+    apiPathField.change(function () {
+        hideAllFields();
+        showActiveApi();
+    });
+    
     var websocket;
     var output;
     var JWT;
@@ -149,6 +200,10 @@
         connect();
     });
 
+    $("#disconnect").click(function () {
+        websocket.close();
+    });
+
     $("#send").click(function () {
         var login = new Login($("#nick").val(), $("#password").val());
         var jsonToSend = {
@@ -159,7 +214,7 @@
         console.log(dataToSend);
         doSend(Base64Encode(dataToSend));
     });
-    
+
     function Login(nick, password) {
         this.nick = nick;
         this.password = password;
