@@ -2,91 +2,179 @@
 <html>
 <head>
     <meta charset="utf-8"/>
-    <title>WebSocket Test</title>
-    <script language="javascript" type="text/javascript">
-
-        var wsUri = "";
-        var output;
-
-        function init() {
-            output = document.getElementById("output");
-            testWebSocket();
-        }
-
-        function testWebSocket() {
-            websocket = new WebSocket(wsUri);
-            websocket.onopen = function (evt) {
-                onOpen(evt)
-            };
-            websocket.onclose = function (evt) {
-                onClose(evt)
-            };
-            websocket.onmessage = function (evt) {
-                onMessage(evt)
-            };
-            websocket.onerror = function (evt) {
-                onError(evt)
-            };
-        }
-
-        function onOpen(evt) {
-            writeToScreen("CONNECTED");
-            doSend("WebSocket rocks");
-        }
-
-        function onClose(evt) {
-            writeToScreen("DISCONNECTED");
-        }
-
-        function onMessage(evt) {
-            writeToScreen('<span style="color: blue;">RESPONSE: ' + evt.data + '</span>');
-            websocket.close();
-        }
-
-        function onError(evt) {
-            writeToScreen('<span style="color: red;">ERROR:</span> ' + evt.data);
-        }
-
-        function doSend(message) {
-            writeToScreen("SENT: " + message);
-            websocket.send(message);
-        }
-
-        function writeToScreen(message) {
-            var pre = document.createElement("p");
-            pre.style.wordWrap = "break-word";
-            pre.innerHTML = message;
-            output.appendChild(pre);
-        }
-
-        window.addEventListener("load", init, false);
-
-    </script>
+    <title>Communicator Test</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <script src="js/jquery-3.3.1.min.js"></script>
+    <script src="js/bootstrap.bundle.min.js"></script>
+    <script src="js/base64js.min.js"></script>
 </head>
 
 <body>
-<h2>WebSocket Test</h2>
-<div class="socket-option" style="margin-bottom: 20px;">
-    <label for="socket-addr">Socket address</label><input type="text" id="socket-addr">
-    <button>Connect</button>
-    <button>Disconnect</button>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-6">
+            <h2>Communicator Test</h2>
+
+            <div class="form-group">
+                <label class="col-sm-3 col-form-label" for="socket-addr">Socket address</label>
+                <input type="text" class="col-sm-3" id="socket-addr" value="ws://127.0.0.1:7777/chat">
+                <button id="connect" type="button" class="btn btn-primary mb-2 btn-sm">Connect</button>
+                <button id="disconnect" type="button" class="btn btn-danger mb-2 btn-sm">Disconnect</button>
+            </div>
+
+            <div class="form-group" style="margin-bottom: 0">
+                <label class="col-sm-3 col-form-label" for="api-path">Api path</label>
+                <select type="text" class="col-sm-3" id="api-path">
+                    <option>1</option>
+                    <option>2</option>
+                    <option>3</option>
+                    <option>4</option>
+                    <option>5</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <div class="col-sm-8">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="JWT">
+                        <label class="form-check-label" for="JWT">Include JWT</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <button id="send" type="button" class="btn btn-success mb-2 btn-sm">Send</button>
+            </div>
+
+            <h5>Data:</h5>
+            <div class="form-group" style="margin-bottom: 0">
+                <label class="col-sm-3 col-form-label" for="nick">Your nick</label>
+                <input type="text" class="col-sm-3" id="nick">
+            </div>
+
+            <div class="form-group" style="margin-bottom: 0">
+                <label class="col-sm-3 col-form-label" for="password">Password</label>
+                <input type="text" class="col-sm-3" id="password">
+            </div>
+
+            <div class="form-group" style="margin-bottom: 0">
+                <label class="col-sm-3 col-form-label" for="userNick">UserNick</label>
+                <input type="text" class="col-sm-3" id="userNick">
+            </div>
+
+            <div class="form-group" style="margin-bottom: 0">
+                <label class="col-sm-3 col-form-label" for="status">Status</label>
+                <select type="text" class="col-sm-3" id="status">
+                    <option>accept</option>
+                    <option>reject</option>
+                </select>
+            </div>
+
+            <div class="form-group" style="margin-bottom: 0">
+                <label class="col-sm-3 col-form-label" for="message">Message</label>
+                <textarea class="col-sm-3" id="message"></textarea>
+            </div>
+        </div>
+
+
+        <!--################-->
+
+
+        <div class="col-6">
+            <h2>Communication info</h2>
+            <div id="output"></div>
+        </div>
+    </div>
 </div>
 
-<div class="options">
-    <div class="option">
-        <label for="api-path">Api path</label><input type="text" id="api-path">
-    </div>
+<script language="javascript" type="text/javascript">
+    var websocket;
+    var output;
+    var JWT;
+    var dataToSend;
 
-    <div class="option">
-        <label for="JWT">JWT</label><input type="text" id="JWT">
-    </div>
+    function connect() {
+        var wsUri = $("#socket-addr").val();
+        output = document.getElementById("output");
+        webSocketConnect(wsUri);
+    }
 
-    <div class="option">
-        <label for="content">Content</label><textarea id="content"></textarea>
-    </div>
-</div>
+    function webSocketConnect(wsUri) {
+        websocket = new WebSocket(wsUri);
 
-<h2>Communication info</h2>
-<div id="output"></div>
+        websocket.onopen = function (evt) {
+            onOpen(evt)
+        };
+        websocket.onclose = function (evt) {
+            onClose(evt)
+        };
+        websocket.onmessage = function (evt) {
+            onMessage(evt)
+        };
+        websocket.onerror = function (evt) {
+            onError(evt)
+        };
+    }
+
+    function onOpen(evt) {
+        writeToScreen("CONNECTED");
+    }
+
+    function onClose(evt) {
+        writeToScreen("DISCONNECTED");
+    }
+
+    function onMessage(evt) {
+        writeToScreen('<span style="color: blue;">RESPONSE: ' + Base64Decode(evt.data) + '</span>');
+    }
+
+    function onError(evt) {
+        writeToScreen('<span style="color: red;">ERROR:</span> ' + evt.data);
+    }
+
+    function doSend(message) {
+        writeToScreen("SENT: " + message);
+        websocket.send(message);
+    }
+
+    function writeToScreen(message) {
+        var pre = document.createElement("p");
+        pre.style.wordWrap = "break-word";
+        pre.innerHTML = message;
+        output.appendChild(pre);
+    }
+
+    $("#connect").click(function () {
+        connect();
+    });
+
+    $("#send").click(function () {
+        var login = new Login($("#nick").val(), $("#password").val());
+        var jsonToSend = {
+            "apiPath": "/login",
+            "data": login
+        };
+        dataToSend = JSON.stringify(jsonToSend);
+        console.log(dataToSend);
+        doSend(Base64Encode(dataToSend));
+    });
+    
+    function Login(nick, password) {
+        this.nick = nick;
+        this.password = password;
+    }
+
+    function Base64Encode(str) {
+        var bytes = new (TextEncoder || TextEncoderLite)('utf-8').encode(str);
+        return base64js.fromByteArray(bytes);
+    }
+
+    function Base64Decode(str) {
+        var bytes = base64js.toByteArray(str);
+        return new (TextDecoder || TextDecoderLite)('utf-8').decode(bytes);
+    }
+</script>
+
 </body>
 </html>
