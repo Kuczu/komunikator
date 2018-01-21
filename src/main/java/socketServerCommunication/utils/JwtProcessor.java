@@ -18,6 +18,7 @@ import socketServerCommunication.responses.Response;
 import socketServerCommunication.responses.ResponseProcessorStep;
 
 import java.io.UnsupportedEncodingException;
+import java.util.Base64;
 
 public class JwtProcessor implements RequestProcessorStep, ResponseProcessorStep {
 	private static JwtProcessor instance;
@@ -59,8 +60,12 @@ public class JwtProcessor implements RequestProcessorStep, ResponseProcessorStep
 //			return;
 //		}
 		
-		String payload = decodedJWT
-				.getPayload(); // TODO make user from payload
+		String payload = new String(
+				Base64.getDecoder()
+						.decode(
+								decodedJWT.getPayload()
+						)
+		);
 		
 		JsonObject parsedPayload = jsonParser
 				.parse(payload)
@@ -74,7 +79,7 @@ public class JwtProcessor implements RequestProcessorStep, ResponseProcessorStep
 		
 		ObjectId userSocketId = UserConnectionContext.getUserId(request.getClientWebSocket());
 		
-		if (userSocketId != null && userId != userSocketId) {
+		if (userSocketId != null && userId.compareTo(userSocketId) != 0) {
 			throw new JWTVerificationException("CRITICAL!"); // TODO
 		}
 		
@@ -98,6 +103,12 @@ public class JwtProcessor implements RequestProcessorStep, ResponseProcessorStep
 		}
 		
 		response.setJWT(generateToken(response.getUser()));
+		
+		ObjectId userSocketId = UserConnectionContext.getUserId(response.getRequest().getClientWebSocket());
+		
+		if (userSocketId == null) {
+			UserConnectionContext.addLoggedUser(response.getUser().getId(), response.getRequest().getClientWebSocket());
+		}
 	}
 	
 	private String generateToken(User user) {

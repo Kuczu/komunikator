@@ -66,7 +66,7 @@ public class MessageController {
 		List<Message> messages = ConversationService.getMessages(userId, friendUser.getId());
 		
 		return new Response(
-				ControllersContext.gson
+				ControllersContext.GSON
 						.toJson(messages)
 		);
 	}

@@ -41,7 +41,7 @@ public class FriendsController {
 			return new Response("'body':" + "'Request already is pending'");
 		}
 		
-		PendingFriendRequest pendingFriendRequest = PendingFriendService.addPendingRequest(userId, userToAdd.getId());
+		PendingFriendRequest pendingFriendRequest = PendingFriendService.addPendingRequest(UserService.getUserBy(userId), userToAdd);
 		
 		NotificationService.notifyAboutFriendRequest(pendingFriendRequest);
 		
@@ -78,7 +78,7 @@ public class FriendsController {
 		
 		if (status) {
 			UserWithStatus userWithStatus = ActiveUsersService.getUserWithStatus(user);
-			return new Response(ControllersContext.gson
+			return new Response(ControllersContext.GSON
 					.toJson(userWithStatus));
 		}
 		

@@ -1,5 +1,6 @@
 package communicatorServer.models.friend;
 
+import communicatorServer.models.user.User;
 import communicatorServer.models.user.UserService;
 import org.bson.types.ObjectId;
 
@@ -31,10 +32,13 @@ public class PendingFriendService {
 		PendingFriendDAO.delete(pendingFriendRequest);
 	}
 	
-	public static PendingFriendRequest addPendingRequest(ObjectId requestingUser, ObjectId askedUser) {
+	public static PendingFriendRequest addPendingRequest(User requestingUser, User askedUser) {
 		PendingFriendRequest pendingFriendRequest = new PendingFriendRequest();
-		pendingFriendRequest.setRequestingUserId(requestingUser);
-		pendingFriendRequest.setAskedUserId(askedUser);
+		pendingFriendRequest.setRequestingUserId(requestingUser.getId());
+		pendingFriendRequest.setRequestingUserName(requestingUser.getNick());
+		
+		pendingFriendRequest.setAskedUserId(askedUser.getId());
+		pendingFriendRequest.setAskedUserName(askedUser.getNick());
 		
 		PendingFriendDAO.save(pendingFriendRequest);
 		

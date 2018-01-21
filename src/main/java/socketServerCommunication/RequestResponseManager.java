@@ -26,6 +26,8 @@ public class RequestResponseManager {
 		
 		Response response = controllerHandler.proceed(request);
 		
+		response.setRequest(request);
+		
 		if (response.getUser() == null && request.getUserId() != null) {
 			User user = UserService.getUserBy(request.getUserId());
 			response.setUser(user);

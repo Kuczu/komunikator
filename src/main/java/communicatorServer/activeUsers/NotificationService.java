@@ -21,7 +21,7 @@ public class NotificationService {
 			return;
 		}
 		
-		String body = ControllersContext.gson
+		String body = ControllersContext.GSON
 				.toJson(message);
 		
 		Response response = new Response(body);
@@ -37,7 +37,7 @@ public class NotificationService {
 				.map(FriendEntity::getUserId)
 				.collect(Collectors.toSet());
 		
-		String body = ControllersContext.gson
+		String body = ControllersContext.GSON
 				.toJson(new UserWithStatus(user.getNick(), status));
 		
 		Response response = new Response(body);
@@ -63,7 +63,7 @@ public class NotificationService {
 		}
 		
 		UserWithStatus userWithStatus = ActiveUsersService.getUserWithStatus(pendingFriendRequest.getRequestingUserId());
-		Response response = new Response(ControllersContext.gson
+		Response response = new Response(ControllersContext.GSON
 				.toJson(userWithStatus));
 		response.setClientAppApiPath("/friendAccepted");
 		DataDecryptorEncryptor.getInstance().proceed(response);

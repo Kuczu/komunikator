@@ -66,7 +66,7 @@ public class UserController {
 		User user = UserService.getUserBy(request.getUserId());
 		
 		return new Response(
-				ControllersContext.gson
+				ControllersContext.GSON
 						.toJson(ActiveUsersService
 								.getUsersWithStatus(user.getFirendsIdList())
 						)
@@ -79,11 +79,15 @@ public class UserController {
 		UserNewActivity messageActivity = UserService.getMessageActivity(request.getUserId());
 		
 		JsonObject jsonObject = new JsonObject();
-		jsonObject.addProperty("friendRequests", ControllersContext.gson
-				.toJson(pendingFriendRequests));
-		jsonObject.addProperty("messagesUsersName", ControllersContext.gson
-				.toJson(messageActivity.getUnreadMessagesUsersName()));
 		
-		return new Response(jsonObject.getAsString());
+		jsonObject.addProperty("friendRequests", ControllersContext.GSON
+					.toJson(pendingFriendRequests));
+		
+		if (messageActivity != null) {
+			jsonObject.addProperty("messagesUsersName", ControllersContext.GSON
+					.toJson(messageActivity.getUnreadMessagesUsersName()));
+		}
+		
+		return new Response(ControllersContext.GSON.toJson(jsonObject));
 	}
 }
