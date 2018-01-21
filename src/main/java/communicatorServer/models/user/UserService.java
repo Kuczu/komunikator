@@ -64,7 +64,7 @@ public class UserService {
 	
 	public static boolean usersAreFriends(User user, ObjectId userId) {
 		return user
-				.getFirendsIdList()
+				.getFriendEntities()
 				.stream()
 				.map(FriendEntity::getUserId)
 				.collect(Collectors.toList())

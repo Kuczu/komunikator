@@ -28,7 +28,7 @@ public class ConversationDAO {
 		return query.count() == 1;
 	}
 	
-	public static List<Message> getByUsersId(ObjectId userId, ObjectId userId2) {
+	public static Conversation getByUsersId(ObjectId userId, ObjectId userId2) {
 		Query<Conversation> query = DATASTORE.createQuery(Conversation.class);
 		
 		List<ObjectId> usersId = Lists.newArrayList(userId, userId2);
@@ -39,11 +39,6 @@ public class ConversationDAO {
 		);
 		
 		return query
-				.get()
-				.getMessages();
-	}
-	
-	public static void addMessage(Message message, ObjectId userIdReciver) {
-	
+				.get();
 	}
 }

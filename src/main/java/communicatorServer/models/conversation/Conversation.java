@@ -50,7 +50,7 @@ public class Conversation {
 	
 	public List<Message> getMessages() {
 		if (messages == null) {
-			return new ArrayList<>(0);
+			this.messages = new ArrayList<>();
 		}
 		return messages;
 	}

@@ -14,7 +14,7 @@ public class User {
 	public static final String NICK = "nick";
 	public static final String PASSWORD = "password";
 	public static final String JOIN_DATE = "joinDate";
-	public static final String FRIENDS_ID_LIST = "firendsIdList";
+	public static final String FRIENDS_ID_LIST = "friendEntities";
 	
 	@Id
 	private ObjectId id;
@@ -23,7 +23,7 @@ public class User {
 	private String password;
 	private Date joinDate;
 	
-	private List<FriendEntity> firendsIdList;
+	private List<FriendEntity> friendEntities;
 	
 	public ObjectId getId() {
 		return id;
@@ -57,15 +57,15 @@ public class User {
 		this.joinDate = joinDate;
 	}
 	
-	public List<FriendEntity> getFirendsIdList() {
-		if (firendsIdList == null) {
-			return new ArrayList<>();
+	public List<FriendEntity> getFriendEntities() {
+		if (friendEntities == null) {
+			this.friendEntities = new ArrayList<>();
 		}
 		
-		return firendsIdList;
+		return friendEntities;
 	}
 	
-	public void setFirendsIdList(List<FriendEntity> firendsIdList) {
-		this.firendsIdList = new ArrayList<>(firendsIdList);
+	public void setFriendEntities(List<FriendEntity> friendEntities) {
+		this.friendEntities = new ArrayList<>(friendEntities);
 	}
 }

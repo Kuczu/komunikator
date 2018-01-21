@@ -1,10 +1,12 @@
 package communicatorServer.models.user;
 
 import org.bson.types.ObjectId;
+import org.mongodb.morphia.annotations.Embedded;
 import org.mongodb.morphia.annotations.Entity;
 import org.mongodb.morphia.annotations.Id;
 import org.mongodb.morphia.annotations.Indexed;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity("UserNewActivities")
@@ -18,6 +20,8 @@ public class UserNewActivity {
 	
 	@Indexed
 	private ObjectId userId;
+	
+	@Embedded
 	private Set<String> unreadMessagesUsersName;
 	
 	public ObjectId getId() {
@@ -37,6 +41,10 @@ public class UserNewActivity {
 	}
 	
 	public Set<String> getUnreadMessagesUsersName() {
+		if (unreadMessagesUsersName == null) {
+			this.unreadMessagesUsersName = new HashSet<>();
+		}
+		
 		return unreadMessagesUsersName;
 	}
 	

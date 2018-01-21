@@ -32,7 +32,7 @@ public class NotificationService {
 	}
 	
 	public static void notifyAboutStatusChange(User user, boolean status) {
-		Set<ObjectId> friendsId = user.getFirendsIdList()
+		Set<ObjectId> friendsId = user.getFriendEntities()
 				.stream()
 				.map(FriendEntity::getUserId)
 				.collect(Collectors.toSet());

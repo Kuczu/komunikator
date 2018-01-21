@@ -68,7 +68,7 @@ public class UserController {
 		return new Response(
 				ControllersContext.GSON
 						.toJson(ActiveUsersService
-								.getUsersWithStatus(user.getFirendsIdList())
+								.getUsersWithStatus(user.getFriendEntities())
 						)
 		);
 	}
