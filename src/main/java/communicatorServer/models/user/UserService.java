@@ -6,9 +6,13 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 public class UserService {
+	private static final Logger LOGGER = Logger.getLogger(UserService.class.getName());
+
 	private final static PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 	
 	public static User getUserBy(ObjectId userId) {
@@ -52,6 +56,8 @@ public class UserService {
 		user.setJoinDate(new Date());
 		
 		UserDAO.save(user);
+		
+		LOGGER.log(Level.INFO, "Added user: " + user.getNick());
 		
 		return user;
 	}

@@ -70,7 +70,7 @@ public class FriendsController {
 			return new Response("'body':" + "'There is no request to procced'");
 		}
 		
-		boolean status = requestStatus.equals("accepted");
+		boolean status = requestStatus.startsWith("accept");
 		
 		PendingFriendService.changeStatus(pendingRequest, status);
 		

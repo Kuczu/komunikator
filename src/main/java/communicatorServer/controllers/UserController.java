@@ -15,9 +15,13 @@ import socketServerCommunication.requests.Request;
 import socketServerCommunication.responses.Response;
 
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @Controller
 public class UserController {
+	private static final Logger LOGGER = Logger.getLogger(UserController.class.getName());
+	
 	@ApiPath(path = "/register", needAuthenticate = false)
 	public Response registerUser(Request request) {
 		JsonObject jsonRequest = request.getBodyAsJsonObj();
@@ -30,6 +34,7 @@ public class UserController {
 			
 			return new Response(user);
 		} catch (Exception e) {
+			LOGGER.log(Level.WARNING, e.getMessage());
 			return new Response("'body':" + "'" + e.getMessage() + "'");
 		}
 	}
@@ -51,6 +56,7 @@ public class UserController {
 			
 			return response;
 		} catch (Exception e) {
+			LOGGER.log(Level.WARNING, e.getMessage());
 			return new Response("'body':" + "'" + e.getMessage() + "'");
 		}
 	}

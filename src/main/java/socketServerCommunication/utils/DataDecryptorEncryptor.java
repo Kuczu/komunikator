@@ -44,8 +44,9 @@ public class DataDecryptorEncryptor implements RequestProcessorStep, ResponsePro
 		}
 		
 		jsonElement = jsonObject.get("data");
+		
 		if (jsonElement != null) {
-			request.setBody(jsonElement.getAsString());
+			request.setBody(jsonElement.toString());
 		}
 	}
 	
