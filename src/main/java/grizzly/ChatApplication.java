@@ -1,7 +1,6 @@
 package grizzly;
 
 import communicatorServer.activeUsers.ActiveUsersService;
-import communicatorServer.contexts.UserConnectionContext;
 import org.glassfish.grizzly.websockets.DataFrame;
 import org.glassfish.grizzly.websockets.WebSocket;
 import org.glassfish.grizzly.websockets.WebSocketApplication;

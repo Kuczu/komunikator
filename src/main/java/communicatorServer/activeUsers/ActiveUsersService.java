@@ -1,6 +1,6 @@
 package communicatorServer.activeUsers;
 
-import communicatorServer.contexts.UserConnectionContext;
+import communicatorServer.contexts.UserConnectionService;
 import communicatorServer.models.user.FriendEntity;
 import communicatorServer.models.user.User;
 import communicatorServer.models.user.UserService;
@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 
 public class ActiveUsersService {
 	public static void logout(WebSocket webSocket) {
-		logout(UserConnectionContext.getUserId(webSocket), webSocket);
+		logout(UserConnectionService.getUserId(webSocket), webSocket);
 	}
 	
 	public static void logout(ObjectId userId, WebSocket webSocket) {
@@ -26,11 +26,11 @@ public class ActiveUsersService {
 			return;
 		}
 		
-		UserConnectionContext.deleteUserSocket(user.getId(), webSocket);
+		UserConnectionService.deleteUserSocket(user.getId(), webSocket);
 		
-		if (!getUserStatus(user.getId())) {
+//		if (!getUserStatus(user.getId())) {
 			NotificationService.notifyAboutStatusChange(user, false);
-		}
+//		}
 	}
 	
 	public static UserWithStatus getUserWithStatus(User user) {
@@ -42,13 +42,13 @@ public class ActiveUsersService {
 	}
 	
 	public static boolean getUserStatus(ObjectId userId) {
-		Set<ObjectId> loggedUsersId = UserConnectionContext.getLoggedUsersId();
+		Set<ObjectId> loggedUsersId = UserConnectionService.getLoggedUsersId();
 		
 		return loggedUsersId.contains(userId);
 	}
 	
 	public static List<UserWithStatus> getUsersWithStatus(Collection<FriendEntity> friendEntities) {
-		Set<ObjectId> loggedUsersId = UserConnectionContext.getLoggedUsersId();
+		Set<ObjectId> loggedUsersId = UserConnectionService.getLoggedUsersId();
 		
 		return friendEntities
 				.stream()

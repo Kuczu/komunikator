@@ -11,7 +11,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
-public class UserConnectionContext {
+public class UserConnectionService {
 	private static final SetMultimap<ObjectId, WebSocket> USERID_TO_SOCKETS_MAP = MultimapBuilder
 			.hashKeys(100)
 			.hashSetValues()

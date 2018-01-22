@@ -1,7 +1,7 @@
 package communicatorServer.activeUsers;
 
 import communicatorServer.contexts.ControllersContext;
-import communicatorServer.contexts.UserConnectionContext;
+import communicatorServer.contexts.UserConnectionService;
 import communicatorServer.models.conversation.Message;
 import communicatorServer.models.friend.PendingFriendRequest;
 import communicatorServer.models.user.FriendEntity;
@@ -28,7 +28,7 @@ public class NotificationService {
 		response.setClientAppApiPath("/messageNotification");
 		DataDecryptorEncryptor.getInstance().proceed(response);
 		
-		UserConnectionContext.sendNotification(userId, response);
+		UserConnectionService.sendNotification(userId, response);
 	}
 	
 	public static void notifyAboutStatusChange(User user, boolean status) {
@@ -44,7 +44,7 @@ public class NotificationService {
 		response.setClientAppApiPath("/userStatus");
 		DataDecryptorEncryptor.getInstance().proceed(response);
 		
-		UserConnectionContext.sendNotification(friendsId, response);
+		UserConnectionService.sendNotification(friendsId, response);
 	}
 	
 	public static void notifyAboutFriendRequest(PendingFriendRequest pendingFriendRequest) {
@@ -54,7 +54,7 @@ public class NotificationService {
 		response.setClientAppApiPath("/newFriendRequest");
 		DataDecryptorEncryptor.getInstance().proceed(response);
 		
-		UserConnectionContext.sendNotification(pendingFriendRequest.getAskedUserId(), response);
+		UserConnectionService.sendNotification(pendingFriendRequest.getAskedUserId(), response);
 	}
 	
 	public static void notifyAboutFriendStatusChange(PendingFriendRequest pendingFriendRequest, boolean status) {
@@ -68,6 +68,6 @@ public class NotificationService {
 		response.setClientAppApiPath("/friendAccepted");
 		DataDecryptorEncryptor.getInstance().proceed(response);
 		
-		UserConnectionContext.sendNotification(pendingFriendRequest.getRequestingUserId(), response);
+		UserConnectionService.sendNotification(pendingFriendRequest.getRequestingUserId(), response);
 	}
 }

@@ -1,6 +1,6 @@
 //package socketServerCommunication;
 //
-//import communicatorServer.contexts.UserConnectionContext;
+//import communicatorServer.contexts.UserConnectionService;
 //import communicatorServer.models.user.user;
 //import socketServerCommunication.requests.ConnectionRequestStatus;
 //import socketServerCommunication.requests.Request;
@@ -37,11 +37,11 @@
 //
 ////	public void setUserAndSubscribe(user user) {
 ////		this.user = user;
-////		UserConnectionContext.addLoggedUser(user.getId(), this);
+////		UserConnectionService.addLoggedUser(user.getId(), this);
 ////	}
 ////
 ////	public void unsubscribe() {
-////		UserConnectionContext.deleteUserSocket(user.getId(), this);
+////		UserConnectionService.deleteUserSocket(user.getId(), this);
 ////	}
 //
 //	@Override

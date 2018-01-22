@@ -8,7 +8,7 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import communicatorServer.config.AppMainConfig;
-import communicatorServer.contexts.UserConnectionContext;
+import communicatorServer.contexts.UserConnectionService;
 import communicatorServer.models.user.User;
 import communicatorServer.models.user.UserService;
 import org.bson.types.ObjectId;
@@ -77,7 +77,7 @@ public class JwtProcessor implements RequestProcessorStep, ResponseProcessorStep
 						.getAsString()
 		);
 		
-		ObjectId userSocketId = UserConnectionContext.getUserId(request.getClientWebSocket());
+		ObjectId userSocketId = UserConnectionService.getUserId(request.getClientWebSocket());
 		
 		if (userSocketId != null && userId.compareTo(userSocketId) != 0) {
 			throw new JWTVerificationException("CRITICAL!"); // TODO
@@ -92,7 +92,7 @@ public class JwtProcessor implements RequestProcessorStep, ResponseProcessorStep
 		request.setUserId(userId);
 		
 		if (userSocketId == null) {
-			UserConnectionContext.addLoggedUser(userId, request.getClientWebSocket());
+			UserConnectionService.addLoggedUser(userId, request.getClientWebSocket());
 		}
 	}
 	
@@ -104,10 +104,10 @@ public class JwtProcessor implements RequestProcessorStep, ResponseProcessorStep
 		
 		response.setJWT(generateToken(response.getUser()));
 		
-		ObjectId userSocketId = UserConnectionContext.getUserId(response.getRequest().getClientWebSocket());
+		ObjectId userSocketId = UserConnectionService.getUserId(response.getRequest().getClientWebSocket());
 		
 		if (userSocketId == null) {
-			UserConnectionContext.addLoggedUser(response.getUser().getId(), response.getRequest().getClientWebSocket());
+			UserConnectionService.addLoggedUser(response.getUser().getId(), response.getRequest().getClientWebSocket());
 		}
 	}
 	
